@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                <td>{{ (cash + total) | usd }}</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for item in rows %}
+                {% if item["SUM(shares)"] != 0 %}
+                    <tr>
+                        <td>{{ item["symbol"] }}</td>
+                        <td>{{ item["name"] }} </td>
+                        <td>{{ item["SUM(shares)"] }}</td>
+                        <td>{{ latestPrice[item["symbol"]] | usd }}</td>
+                        <td>{{ (item["SUM(shares)"] * latestPrice[item["symbol"]]) | usd }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td colspan="4">CASH</td>
+                <td>{{ cash | usd}}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
